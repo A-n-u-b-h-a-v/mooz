@@ -2,13 +2,11 @@
 import DatenTime from '@/components/DatenTime'
 import MeetingTypeList from '@/components/MeetingTypeList'
 import { useGetCalls } from '@/hooks/useGetCalls'
-import { CallRecording } from '@stream-io/node-sdk'
 import { Call } from '@stream-io/video-react-sdk'
 
 const Home = () => {
   const { upcomingCalls } = useGetCalls()
 
-  // ✅ Get only the first (earliest) upcoming call
   const nextCall = upcomingCalls && upcomingCalls.length > 0 ? upcomingCalls[0] : null
 
   return (
@@ -25,7 +23,7 @@ const Home = () => {
               <span>No upcoming calls</span>
             )}
           </h2>
-                                                        
+
           <div className="flex flex-col gap-2">
             <DatenTime />
           </div>
