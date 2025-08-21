@@ -6,7 +6,7 @@ import { Call } from '@stream-io/video-react-sdk'
 
 const Home = () => {
   const formatDate = (date: Date | undefined) => {
-    if (!date) return "No start time";
+    if (!date) return null;
     return date.toLocaleString("en-GB", {
       day: "numeric",
       month: "short",
@@ -19,15 +19,20 @@ const Home = () => {
   const { upcomingCalls } = useGetCalls()
   const nextCall = upcomingCalls && upcomingCalls.length > 0 ? upcomingCalls[0] : null
 
+  const nextCallTime = nextCall ? formatDate((nextCall as Call)?.state.startsAt) : null
+
   return (
     <section className="flex size-full flex-col gap-10 text-white">
       <div className="h-[300px] w-full rounded-[20px] bg-hero bg-cover">
         <div className="flex h-full flex-col justify-between max-md:px-5 max-md:py-8 lg:p-11">
 
-          <h2 className='glassmorphism  max-w-[270px] rounded py-2 text-center text-base animate-bounce'>
-            {nextCall ? (
-              <span className='w-full whitespace-nowrap '>
-                {`Next call at : ${formatDate((nextCall as Call)?.state.startsAt) ?? "No start time"}`}
+          <h2
+            className={`glassmorphism max-w-[270px] rounded py-2 text-center text-base 
+              ${nextCallTime ? "animate-bounce" : ""}`}
+          >
+            {nextCallTime ? (
+              <span className="w-full whitespace-nowrap">
+                {`Next call at : ${nextCallTime}`}
               </span>
             ) : (
               <span>No upcoming calls</span>
