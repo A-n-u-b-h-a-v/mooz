@@ -27,7 +27,7 @@ const Home = () => {
 
           <h2 className='glassmorphism max-w-[270px] rounded py-2 text-center text-base '>
             {nextCall ? (
-              <span>
+              <span className='w-full whitespace-nowrap '>
                 {`Next call at: ${formatDate((nextCall as Call)?.state.startsAt) ?? "No start time"}`}
               </span>
             ) : (
