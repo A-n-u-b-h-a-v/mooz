@@ -5,8 +5,19 @@ import { useGetCalls } from '@/hooks/useGetCalls'
 import { Call } from '@stream-io/video-react-sdk'
 
 const Home = () => {
-  const { upcomingCalls } = useGetCalls()
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return "No start time";
+    return date.toLocaleString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
 
+  const { upcomingCalls } = useGetCalls()
   const nextCall = upcomingCalls && upcomingCalls.length > 0 ? upcomingCalls[0] : null
 
   return (
@@ -17,7 +28,7 @@ const Home = () => {
           <h2 className='glassmorphism max-w-[270px] rounded py-2 text-center text-base '>
             {nextCall ? (
               <span>
-                {`Next call at: ${(nextCall as Call)?.state.startsAt?.toLocaleString() ?? "No start time"}`}
+                {`Next call at: ${formatDate((nextCall as Call)?.state.startsAt) ?? "No start time"}`}
               </span>
             ) : (
               <span>No upcoming calls</span>
