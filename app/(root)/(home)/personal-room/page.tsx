@@ -28,7 +28,7 @@ const Previous = () => {
     if (!user || !client) return;
     if(call){
       const newCall = client.call("default", meetingId!)
-      await newCall?.getOrCreate({
+      await newcall.getOrCreate({
           data: {
             starts_at:new Date().toISOString(),
           }

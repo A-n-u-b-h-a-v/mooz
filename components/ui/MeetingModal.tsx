@@ -4,7 +4,6 @@ import {
 } from "@/components/ui/dialog"
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-import { ReactNode } from "react";
 import { Button } from "./button";
 import { DialogTitle } from "@radix-ui/react-dialog";
 

@@ -10,15 +10,15 @@ const MeetingSetup = ({ setisSetupComplete }: { setisSetupComplete: (value: bool
   }
   useEffect(() => {
     if (isMicCamOn) {
-      call?.camera?.disable();
-      call?.microphone?.disable();
+      call.camera?.disable();
+      call.microphone?.disable();
 
     } else {
-      call?.camera?.enable();
-      call?.microphone?.enable();
+      call.camera?.enable();
+      call.microphone?.enable();
     }
 
-  }, [isMicCamOn, call?.camera, call?.microphone]);
+  }, [isMicCamOn, call.camera, call.microphone]);
   return (
     <div className='flex h-screen w-full flex-col items-center justify-center gap-3 text-white'>
       <h1 className='text-2xl font-bold'>Meeting Setup</h1>
