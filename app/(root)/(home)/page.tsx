@@ -9,8 +9,7 @@ const Home = () => {
     if (!date) return "No start time";
     return date.toLocaleString("en-GB", {
       day: "numeric",
-      month: "long",
-      year: "numeric",
+      month: "short",
       hour: "numeric",
       minute: "2-digit",
       hour12: true,
@@ -28,7 +27,7 @@ const Home = () => {
           <h2 className='glassmorphism max-w-[270px] rounded py-2 text-center text-base '>
             {nextCall ? (
               <span className='w-full whitespace-nowrap '>
-                {`Next call at: ${formatDate((nextCall as Call)?.state.startsAt) ?? "No start time"}`}
+                {`Next call at : ${formatDate((nextCall as Call)?.state.startsAt) ?? "No start time"}`}
               </span>
             ) : (
               <span>No upcoming calls</span>
