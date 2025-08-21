@@ -2,58 +2,73 @@
 import { Button } from '@/components/ui/button'
 import { useGetCallById } from '@/hooks/useGetCallById'
 import { useUser } from '@clerk/nextjs'
-import {  useStreamVideoClient } from '@stream-io/video-react-sdk'
+import { useStreamVideoClient } from '@stream-io/video-react-sdk'
 import { useRouter } from 'next/navigation'
 import React from 'react'
 import { toast } from 'sonner'
-
-
 
 const Table = ({ title, description }: { title: string, description: string }) => {
   return (
     <div className='flex flex-col items-start gap-2 xl:flex-row'>
       <h1 className='text-base font-medium text-sky1 lg:text-xl xl:min-w-32'>{title}:</h1>
-      <h1 className='truncate text-sm font-bold max-sm::max-w-[320px] lg:text-xl'>{description}:</h1>
-    </div>)
+      <h1 className='truncate text-sm font-bold max-sm:max-w-[320px] lg:text-xl'>{description}</h1>
+    </div>
+  )
 }
 
 const Previous = () => {
   const { user } = useUser();
-  const {call}=useGetCallById(user?.id!);
-  const client=useStreamVideoClient()
-  const router = useRouter()
-  const meetingId = user?.id
-  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meetings/${meetingId}?personal=true`;
-  const startRoom = async () => {
-    if (!user || !client) return;
-    if(call){
-      const newCall = client.call("default", meetingId!)
-      await newCall.getOrCreate({
-          data: {
-            starts_at:new Date().toISOString(),
-          }
-        })
-       
-    }
-    router.push(`/meetings/${meetingId}?personal=true`);
+  const meetingId = user?.id ?? "";   // <- no non-null assertion
+  const { call } = useGetCallById(meetingId);
+  const client = useStreamVideoClient();
+  const router = useRouter();
+
+  // if user is not loaded yet, don’t render anything
+  if (!user || !meetingId) {
+    return null;
   }
+
+  const meetingLink = `${process.env.NEXT_PUBLIC_BASE_URL}/meetings/${meetingId}?personal=true`;
+
+  const startRoom = async () => {
+    if (!client || !meetingId) return;
+
+    try {
+      if (call) {
+        const newCall = client.call("default", meetingId);
+        await newCall.getOrCreate({
+          data: {
+            // eslint-disable-next-line camelcase -- API requires snake_case
+            starts_at: new Date().toISOString(),
+          },
+        });
+      }
+      router.push(`/meetings/${meetingId}?personal=true`);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to start room");
+    }
+  };
+
   return (
     <section className='flex size-full flex-col gap-10 text-white'>
-      <h1 className='text-3xl font-bold'>
-        Personal Room
-      </h1>
+      <h1 className='text-3xl font-bold'>Personal Room</h1>
       <div className='flex w-full gap-8 flex-col xl:max-w-[900px]'>
-        <Table title='Topic' description={`${user?.username}'s meeting room`} />
-        <Table title='Meeting ID' description={meetingId!} />
+        <Table title='Topic' description={`${user.username}'s meeting room`} />
+        <Table title='Meeting ID' description={meetingId} />
         <Table title='Invite Link' description={meetingLink} />
       </div>
       <div className='flex gap-5'>
         <Button className='bg-blue-1' onClick={startRoom}>Start Room</Button>
-        <Button className='bg-dark-3' onClick={() => {
-          navigator.clipboard.writeText(meetingLink)
-          toast.message("Link Copied");
-        }}>Copy Invitation</Button>
-
+        <Button
+          className='bg-dark-3'
+          onClick={() => {
+            navigator.clipboard.writeText(meetingLink)
+            toast.message("Link Copied");
+          }}
+        >
+          Copy Invitation
+        </Button>
       </div>
     </section>
   )
