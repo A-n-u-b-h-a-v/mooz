@@ -58,8 +58,8 @@ const MeetingCard = ({
           </div>
         </div>
         {!isPreviousMeeting && (
-          <div className="flex gap-2">
-            <Button onClick={handleClick} className="rounded bg-blue-1 px-6">
+          <div className="flex gap-2 w-full ">
+            <Button onClick={handleClick} className="rounded bg-blue-1 px-6 w-1/2">
               {buttonIcon1 && (
                 <Image src={buttonIcon1} alt="feature" width={20} height={20} />
               )}
@@ -70,7 +70,7 @@ const MeetingCard = ({
                 navigator.clipboard.writeText(link);
                 toast.message("Link Copied");
               }}
-              className="bg-dark-4 px-6"
+              className="bg-dark-4 px-6 w-1/2"
             >
               <Image
                 src="/icons/copy.svg"
