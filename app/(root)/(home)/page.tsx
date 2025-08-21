@@ -28,7 +28,7 @@ const Home = () => {
 
           <h2
             className={`glassmorphism max-w-[270px] rounded py-2 text-center text-base 
-              ${nextCallTime ? "animate-bounce" : ""}`}
+              ${nextCallTime ? "animate-bounce" : ""} mt-5`}
           >
             {nextCallTime ? (
               <span className="w-full whitespace-nowrap">
